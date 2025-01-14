@@ -4,7 +4,7 @@ using Eco.Gameplay.Systems.NewTooltip;
 using Eco.Gameplay.Systems.NewTooltip.TooltipLibraryFiles;
 using Eco.Shared.Items;
 using Eco.Shared.Localization;
-using Eco.Shared.Utils;
+using Eco.Shared.Logging;
 using System;
 
 namespace OpenNutriView
