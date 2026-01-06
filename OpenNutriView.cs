@@ -20,6 +20,7 @@ using Eco.Shared.Items;
 using Eco.Shared.Networking;
 using Eco.Stats;
 using Eco.Shared.Voxel;
+using Eco.Gameplay.Settlements.Culture;
 
 namespace OpenNutriView
 {
@@ -159,13 +160,14 @@ namespace OpenNutriView
                 var (tastinessMultiplier, assumedTaste) = TastinessMultiplier(foodCalories, stomach.TasteBuds);
                 var (balancedDietMultiplier, _) = stomachNutrients.CalcBalancedDietMult();
                 var cravingMultiplier = CravingMultiplier(food, stomach);
+                var dinnerPartyMultiplier = DinnerPartyManager.Obj?.MultiplierForUser(stomach.Owner) ?? 1f;
 
                 if (!FeatureConfig.Obj.FoodVarietyMultiplierEnabled)
                     varietyMultiplier = 1;
                 if (!FeatureConfig.Obj.FoodTastinessMultiplierEnabled)
                     tastinessMultiplier = 1;
 
-                var subTotal = nutrientTotal * varietyMultiplier * tastinessMultiplier * balancedDietMultiplier * cravingMultiplier;
+                var subTotal = nutrientTotal * varietyMultiplier * tastinessMultiplier * balancedDietMultiplier * cravingMultiplier * dinnerPartyMultiplier;
                 if (subTotal < 0) subTotal = 0;
                 var newSkillRate = (subTotal + EcoSim.BaseSkillGainRate) * BalanceConfig.Obj?.SkillGainMultiplier??1;
                 var itemTasteMultiplier = !stomach.TasteBuds.FoodToTaste.TryGetValue(food.Type, out ItemTaste itemTaste) || !itemTaste.Discovered ? ItemTaste.TastinessMultiplier[(int)ItemTaste.TastePreference.Delicious] : itemTaste.TastinessMult;
